@@ -39,5 +39,5 @@ int  ED(char *s1, char *s2){
 			matrix[i][j]=MIN3(matrix[i-1][j]+1 , matrix[i][j-1]+1, matrix[i-1][j-1]+ ((s1[i-1]==s2[j-1])?0:1 ) );
 		}
 	}
-	return matrix[sz1][sz2];
+        return MIN5(matrix[sz1-2][sz2],matrix[sz1-1][sz2], matrix[sz1][sz2], matrix[sz1][sz2-2], matrix[sz1][sz2-1]);
 }
