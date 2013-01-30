@@ -1,0 +1,31 @@
+Total five programs:
+bargen1_edit_distance
+bargen1_edit_distance_random
+
+bargen2_Hamming
+bargen2_Hamming_random
+
+balancer
+
+two bargen1 using editdistance
+two bargen2 using hamming distance
+In each set, it has an alternative executables with suffix random so it can randomly choose a start position
+
+balancer is a program to print barcodes list in order with ACGT evenly distributed over the barcode list 
+which produce by either bargen1 or bargen2
+
+example:
+./bargen2_Hamming 3 8 >barlen8_mismatch3.txt
+generate 8 bases, using 3 mismatches with strict rule 2 (default)
+or 
+./bargen2_Hamming 3 8 1 >barlen8_mismatch3.txt
+with strict rule 1 
+
+./balancer barlen8_mismatch3.txt >barlen8_mismatch3.balanced.txt 
+
+rebalance the barcodes list if no second parameter provided, it will try to balance all
+otherwise, will only print the prefered number of barcodes need to balanced:
+
+./balancer barlen8_mismatch3.txt 24 >barlen8_mismatch3.balanced_top24.txt
+
+Author: Jingtao Liu

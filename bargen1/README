@@ -1,0 +1,69 @@
+bargen - a barcode design tool
+
+features: 
+	1. barcode length <=32 bases
+	2. flexible mismatches chosen
+	3. dimers, homopolymers restriction if you know waht it is
+	4. balancing barcode at first N bases
+	5. less memory footprint
+algorithm: 
+		First, for NT barcodes using AGCT, each base can use only two bits in memmory. 
+	So instead of saving strings, the memory just need save digits and iterates over digits.
+	This is a significant speed-up design.
+	
+		Second, based on the mismathces/homopolymer/dimer restrictions, pick out the non-passed
+	filters barcodes from the long digital array. Save this for later balance use.
+	
+		Last, randomly start a position from above saved array, calling the next barcode from the same lib.
+	So that the next barcode can have the minimum bias value. It either stops when it run through the end of barcode 
+	lib, or by a designate number input.
+		
+		Notes:
+		barcode length: due to the design backbone, barcode length restricted to less than 32 b.
+
+		mismatches: can be computed by edit distance or hamming distance(faster)
+
+		bias definition: from base positon 1 to N (barcode length), the bias value is almost the GC contents - 50%.
+	Author has a customized definition of the NT bases, but using GC content is perfectly fine. 	
+	
+		precomputed digital barcode lib: this can be replaced with hash lib, so the existence checking can be 
+	significantly speed-up.(partially done in bargen2/)
+		
+		hint:
+		if you have any set of barcodes try to avoid, preload them before the barcode lib generating(solve function)
+
+compile:
+	make clean
+	make 
+dependency: 
+	almost nothing
+run:
+	./bg -b 8 -m 3 -N 5 -B 24 -S 3 
+
+	./bg	
+	Usage: bg  [options]
+
+	Options:
+		-b barcode size
+		-m mismatches allowed
+		-N number of barcodes need to be balanced
+		-B number of bases need to be balanced
+		-S [optional] strict number, 7 : everything, 3: no trimer,1: no dimer , 0 : no neartri	
+main functions:
+	bargen_digit.h  //using number to represent ACGT string
+		ntoc  number to string
+		cton  string to number 
+	ED.h
+		FD	hamming distance over two same length string
+		ED	edit distance over two same length string
+	DP.h
+		solve	produce barcode pool based on mismatches/homopolymer/dimer/nearhomopolymer
+		balance re-organize the order of barcode pool so that the first N bases balanced over ACTG
+		_ishomo
+		_isNearHomo
+		_isDimer
+
+Author: 
+	Jingtao Liu@EG
+	Nov 2011
+ 	
